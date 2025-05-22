@@ -20,6 +20,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const [maxPrice, setMaxPrice] = useState<number>(30000000);
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [activeSlider, setActiveSlider] = useState<string | null>(null);
 
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMinPrice = parseInt(e.target.value);
@@ -72,17 +73,40 @@ const FilterBar: React.FC<FilterBarProps> = ({
             <div className="flex justify-between items-center mb-1">
               <label className="text-sm font-medium text-gray-700">{weight.name} ({weight.weight}%)</label>
             </div>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={weight.weight}
-              onChange={(e) => onWeightChange(weight.id, parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-              style={{
-                background: `linear-gradient(to right, #0066CC 0%, #0066CC ${weight.weight}%, #E5E7EB ${weight.weight}%, #E5E7EB 100%)`
-              }}
-            />
+            <div className="relative">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={weight.weight}
+                onChange={(e) => onWeightChange(weight.id, parseInt(e.target.value))}
+                onFocus={() => setActiveSlider(weight.id)}
+                onBlur={() => setActiveSlider(null)}
+                className={`w-full h-2 rounded-lg appearance-none cursor-pointer transition-all duration-200
+                  ${activeSlider === weight.id ? 'ring-2 ring-red-300' : ''}
+                  [&::-webkit-slider-thumb]:appearance-none
+                  [&::-webkit-slider-thumb]:w-4
+                  [&::-webkit-slider-thumb]:h-4
+                  [&::-webkit-slider-thumb]:rounded-full
+                  [&::-webkit-slider-thumb]:bg-red-600
+                  [&::-webkit-slider-thumb]:cursor-pointer
+                  [&::-webkit-slider-thumb]:transition-all
+                  [&::-webkit-slider-thumb]:duration-200
+                  [&::-webkit-slider-thumb]:hover:scale-110
+                  [&::-moz-range-thumb]:w-4
+                  [&::-moz-range-thumb]:h-4
+                  [&::-moz-range-thumb]:rounded-full
+                  [&::-moz-range-thumb]:bg-red-600
+                  [&::-moz-range-thumb]:border-0
+                  [&::-moz-range-thumb]:cursor-pointer
+                  [&::-moz-range-thumb]:transition-all
+                  [&::-moz-range-thumb]:duration-200
+                  [&::-moz-range-thumb]:hover:scale-110`}
+                style={{
+                  background: `linear-gradient(to right, #dc2626 0%, #dc2626 ${weight.weight}%, #E5E7EB ${weight.weight}%, #E5E7EB 100%)`
+                }}
+              />
+            </div>
             <p className="text-xs text-gray-500 mt-1">{weight.description}</p>
           </div>
         ))}
@@ -129,7 +153,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                     type="checkbox"
                     checked={selectedBrands.includes(brand)}
                     onChange={() => handleBrandChange(brand)}
-                    className="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+                    className="form-checkbox h-4 w-4 text-red-600 transition duration-150 ease-in-out"
                   />
                   <span className="ml-2 text-sm text-gray-700">{brand}</span>
                 </label>

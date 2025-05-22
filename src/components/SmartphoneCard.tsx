@@ -14,9 +14,13 @@ const SmartphoneCard: React.FC<SmartphoneCardProps> = ({
 }) => {
   const { smartphone, totalScore, featureScores } = weightedScore;
   
-  // Format for feature ratings, convert to 1-10 scale for display
-  const formatRating = (score: number, weight: number) => {
-    return (score / weight * 10).toFixed(1);
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
   };
 
   return (
@@ -42,17 +46,16 @@ const SmartphoneCard: React.FC<SmartphoneCardProps> = ({
       
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
-          <span className="font-bold text-gray-900">${smartphone.price}</span>
+          <span className="font-bold text-gray-900">{formatPrice(smartphone.price)}</span>
           <div className="bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-sm font-semibold">
-            Score: {totalScore.toFixed(1)}
+            Skor: {totalScore.toFixed(1)}
           </div>
         </div>
         
         <div className="space-y-3">
-          {/* Feature scores */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Camera</span>
+              <span>Kamera</span>
               <span className="font-medium">{smartphone.features.camera}/10</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-1.5">
@@ -65,7 +68,7 @@ const SmartphoneCard: React.FC<SmartphoneCardProps> = ({
           
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Display</span>
+              <span>Layar</span>
               <span className="font-medium">{smartphone.features.display}/10</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-1.5">

@@ -15,13 +15,22 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
     return null;
   }
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
+  };
+
   // If only one smartphone is selected, just show detailed specs
   if (selectedScores.length === 1) {
     const { smartphone } = selectedScores[0];
     
     return (
       <div className="bg-white rounded-xl shadow-lg p-6 animate-fadeIn">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">{smartphone.name} Specifications</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Spesifikasi {smartphone.name}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -33,15 +42,15 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
             
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600">Brand</span>
+                <span className="text-gray-600">Merek</span>
                 <span className="font-medium">{smartphone.brand}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Price</span>
-                <span className="font-medium">${smartphone.price}</span>
+                <span className="text-gray-600">Harga</span>
+                <span className="font-medium">{formatPrice(smartphone.price)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Launch Year</span>
+                <span className="text-gray-600">Tahun Rilis</span>
                 <span className="font-medium">{smartphone.launchYear}</span>
               </div>
             </div>
@@ -49,10 +58,10 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
           
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-700">Key Features</h3>
+              <h3 className="text-lg font-semibold mb-2 text-gray-700">Fitur Utama</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Camera Rating</span>
+                  <span className="text-gray-600">Rating Kamera</span>
                   <div className="flex items-center">
                     <div className="w-24 bg-gray-200 rounded-full h-2 mr-2">
                       <div 
@@ -65,7 +74,7 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Display Rating</span>
+                  <span className="text-gray-600">Rating Layar</span>
                   <div className="flex items-center">
                     <div className="w-24 bg-gray-200 rounded-full h-2 mr-2">
                       <div 
@@ -83,17 +92,17 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Processor</span>
+                  <span className="text-gray-600">Prosesor</span>
                   <span className="font-medium">{smartphone.features.processor}</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Battery</span>
+                  <span className="text-gray-600">Baterai</span>
                   <span className="font-medium">{smartphone.features.battery} mAh</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Storage</span>
+                  <span className="text-gray-600">Penyimpanan</span>
                   <span className="font-medium">{smartphone.features.storage} GB</span>
                 </div>
               </div>
@@ -101,7 +110,7 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
             
             {smartphone.additionalInfo && (
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-700">Additional Information</h3>
+                <h3 className="text-lg font-semibold mb-2 text-gray-700">Informasi Tambahan</h3>
                 <p className="text-gray-600">{smartphone.additionalInfo}</p>
               </div>
             )}
@@ -120,25 +129,22 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 animate-fadeIn">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Smartphone Comparison</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Perbandingan Smartphone</h2>
       
       <div className="grid grid-cols-3 gap-4">
-        {/* Headers */}
         <div className="col-span-1"></div>
         <div className="text-center font-semibold text-blue-600">{mainSmartphone.name}</div>
         <div className="text-center font-semibold text-purple-600">{comparisonSmartphone.name}</div>
         
-        {/* Price */}
-        <div className="font-medium text-gray-700">Price</div>
+        <div className="font-medium text-gray-700">Harga</div>
         <div className={`text-center ${mainSmartphone.price < comparisonSmartphone.price ? 'text-green-600 font-semibold' : ''}`}>
-          ${mainSmartphone.price}
+          {formatPrice(mainSmartphone.price)}
         </div>
         <div className={`text-center ${comparisonSmartphone.price < mainSmartphone.price ? 'text-green-600 font-semibold' : ''}`}>
-          ${comparisonSmartphone.price}
+          {formatPrice(comparisonSmartphone.price)}
         </div>
         
-        {/* Camera */}
-        <div className="font-medium text-gray-700">Camera</div>
+        <div className="font-medium text-gray-700">Kamera</div>
         <div className={`text-center ${mainSmartphone.features.camera > comparisonSmartphone.features.camera ? 'text-green-600 font-semibold' : ''}`}>
           {mainSmartphone.features.camera}/10
         </div>
@@ -146,8 +152,7 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
           {comparisonSmartphone.features.camera}/10
         </div>
         
-        {/* Display */}
-        <div className="font-medium text-gray-700">Display</div>
+        <div className="font-medium text-gray-700">Layar</div>
         <div className={`text-center ${mainSmartphone.features.display > comparisonSmartphone.features.display ? 'text-green-600 font-semibold' : ''}`}>
           {mainSmartphone.features.display}/10
         </div>
@@ -155,7 +160,6 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
           {comparisonSmartphone.features.display}/10
         </div>
         
-        {/* RAM */}
         <div className="font-medium text-gray-700">RAM</div>
         <div className={`text-center ${mainSmartphone.features.ram > comparisonSmartphone.features.ram ? 'text-green-600 font-semibold' : ''}`}>
           {mainSmartphone.features.ram} GB
@@ -164,13 +168,11 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
           {comparisonSmartphone.features.ram} GB
         </div>
         
-        {/* Processor */}
-        <div className="font-medium text-gray-700">Processor</div>
+        <div className="font-medium text-gray-700">Prosesor</div>
         <div className="text-center">{mainSmartphone.features.processor}</div>
         <div className="text-center">{comparisonSmartphone.features.processor}</div>
         
-        {/* Battery */}
-        <div className="font-medium text-gray-700">Battery</div>
+        <div className="font-medium text-gray-700">Baterai</div>
         <div className={`text-center ${mainSmartphone.features.battery > comparisonSmartphone.features.battery ? 'text-green-600 font-semibold' : ''}`}>
           {mainSmartphone.features.battery} mAh
         </div>
@@ -178,8 +180,7 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
           {comparisonSmartphone.features.battery} mAh
         </div>
         
-        {/* Storage */}
-        <div className="font-medium text-gray-700">Storage</div>
+        <div className="font-medium text-gray-700">Penyimpanan</div>
         <div className={`text-center ${mainSmartphone.features.storage > comparisonSmartphone.features.storage ? 'text-green-600 font-semibold' : ''}`}>
           {mainSmartphone.features.storage} GB
         </div>
@@ -187,8 +188,7 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
           {comparisonSmartphone.features.storage} GB
         </div>
         
-        {/* Total Score */}
-        <div className="font-medium text-gray-700 pt-2 border-t">Total Score</div>
+        <div className="font-medium text-gray-700 pt-2 border-t">Skor Total</div>
         <div className="text-center font-bold text-blue-600 pt-2 border-t">
           {selectedScores[0].totalScore.toFixed(1)}
         </div>
@@ -197,11 +197,10 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
         </div>
       </div>
       
-      {/* MEA Analysis */}
       <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Means-End Analysis</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">Analisis Means-End</h3>
         <p className="text-gray-600 mb-4">
-          Based on your preferences, here's why {mainSmartphone.name} {selectedScores[0].totalScore > selectedScores[1].totalScore ? 'outperforms' : 'compares to'} {comparisonSmartphone.name}:
+          Berdasarkan preferensi Anda, berikut mengapa {mainSmartphone.name} {selectedScores[0].totalScore > selectedScores[1].totalScore ? 'lebih unggul dari' : 'dibandingkan dengan'} {comparisonSmartphone.name}:
         </p>
         
         <ul className="space-y-3">
@@ -212,10 +211,10 @@ const SmartphoneComparison: React.FC<SmartphoneComparisonProps> = ({
               </span>
               <span>
                 <strong>{path.feature}:</strong> {path.difference > 0 
-                  ? `${mainSmartphone.name} is better by ${Math.abs(path.difference).toFixed(1)} points` 
+                  ? `${mainSmartphone.name} lebih baik ${Math.abs(path.difference).toFixed(1)} poin` 
                   : path.difference < 0 
-                    ? `${comparisonSmartphone.name} is better by ${Math.abs(path.difference).toFixed(1)} points`
-                    : `Both are equally good`
+                    ? `${comparisonSmartphone.name} lebih baik ${Math.abs(path.difference).toFixed(1)} poin`
+                    : `Keduanya sama baik`
                 }
               </span>
             </li>
